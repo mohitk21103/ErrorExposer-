@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -52,7 +53,6 @@ android {
 dependencies {
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.8.3")
-
     // BOM (single consistent version)
     implementation(platform("androidx.compose:compose-bom:2024.10.01"))
 
