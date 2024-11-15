@@ -1,8 +1,11 @@
 package mk.project.errorexposer
-
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+@Parcelize
 data class StackOverflowResponse(
     val items: List<QuestionItem>
-)
+):Parcelable
+@Parcelize
 data class QuestionItem(
     val tags: List<String>,
     val owner: Owner,
@@ -16,8 +19,9 @@ data class QuestionItem(
     val content_license: String,
     val link: String,
     val title: String
-)
+):Parcelable
 
+@Parcelize
 data class Owner(
     val account_id: Int,
     val reputation: Int,
@@ -26,4 +30,4 @@ data class Owner(
     val profile_image: String,
     val display_name: String,
     val link: String
-)
+):Parcelable
