@@ -1,7 +1,6 @@
 package mk.project.errorexposer
 
 import QuestionDetail
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
