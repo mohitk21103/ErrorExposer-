@@ -48,7 +48,8 @@ import mk.project.errorexposer.QuestionsViewModel
 @Composable
 fun QuestionsScreen(
     modifier: Modifier = Modifier,
-    viewstate : QuestionsViewModel.QuestionState
+    viewstate : QuestionsViewModel.QuestionState,
+    onQuestionClicked: (QuestionItem)->Unit
 ){
 
     Box(modifier = Modifier
@@ -86,19 +87,7 @@ fun QuestionsScreen(
                                 .padding(paddingValues)
                                 .background(MaterialTheme.colorScheme.background)
                         ) {
-                            HomeView(questions = viewstate.list)
-                        }
-                    },
-                    floatingActionButton = {
-                        FloatingActionButton(
-                            onClick = { /* Add action here */ },
-                            containerColor = MaterialTheme.colorScheme.secondary
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = "Add Question",
-                                tint = MaterialTheme.colorScheme.onSecondary
-                            )
+                            HomeView(questions = viewstate.list,onQuestionClicked)
                         }
                     }
                 )
@@ -110,21 +99,24 @@ fun QuestionsScreen(
 
 
 @Composable
-fun HomeView(questions: List<QuestionItem>) {
+fun HomeView(questions: List<QuestionItem>, onQuestionClicked: (QuestionItem)->Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .background(Color.Black)
     ) {
         items(questions) { question ->
-            QuestionCard(question)
+            QuestionCard(question, onQuestionClicked)
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-fun QuestionCard(question: QuestionItem) {
+fun QuestionCard(
+    question: QuestionItem,
+    onQuestionClicked: (QuestionItem)->Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -137,7 +129,8 @@ fun QuestionCard(question: QuestionItem) {
             )
             .padding(16.dp)// Inner padding for content
             .clickable {
-                //TODO Add Another Screen in onclick
+                // Add Another Screen in onclick
+                onQuestionClicked(question)
             }
     ) {
         Column {
@@ -171,33 +164,3 @@ fun QuestionCard(question: QuestionItem) {
         }
     }
 }
-
-
-@Composable
-fun uiOfResponses(OwnerResponse: Owner, Question: QuestionItem) {
-    Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth()  // Use fillMaxWidth to avoid stretched images
-            .clickable { }
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {  // Center vertically
-            Image(
-                painter = rememberAsyncImagePainter(model = OwnerResponse.profile_image),
-                contentDescription = "Question owner profile image",
-                modifier = Modifier
-                    .size(48.dp)  // Set a specific size for the image
-                    .clip(CircleShape)  // Make image circular for better appearance
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))  // Add spacing between image and text
-
-            Text(
-                text = Question.title,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.weight(1f)  // Fill remaining space
-            )
-        }
-    }
-}
-
