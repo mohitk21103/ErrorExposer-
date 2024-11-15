@@ -6,14 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class QuestionsViewModel : ViewModel(){
+class QuestionsViewModel : ViewModel() {
     private val _questionState = mutableStateOf(QuestionState())
     val questionState: State<QuestionState> = _questionState
 
     init {
         fetchQuestions()
     }
-    private fun fetchQuestions(){
+
+    // Fetch the full QuestionItem based on questionId
+    fun getQuestionById(questionId: Int): QuestionItem? {
+        return _questionState.value.list.find { it.question_id == questionId }
+    }
+
+    private fun fetchQuestions() {
         viewModelScope.launch {
             try {
                 val response = soResponses.getSOResponse()
@@ -22,7 +28,7 @@ class QuestionsViewModel : ViewModel(){
                     loading = false,
                     error = null
                 )
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 _questionState.value = _questionState.value.copy(
                     loading = false,
                     error = "Error fetching Categories ${e.message}"
@@ -30,8 +36,10 @@ class QuestionsViewModel : ViewModel(){
             }
         }
     }
+
+    // State class to hold question data
     data class QuestionState(
-        val loading : Boolean = true,
+        val loading: Boolean = true,
         val list: List<QuestionItem> = emptyList(),
         val error: String? = null
     )
